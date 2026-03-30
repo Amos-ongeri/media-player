@@ -5,16 +5,24 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.DoubleBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+import javafx.util.Duration;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class MplayerController implements Initializable{
 
@@ -22,14 +30,22 @@ public class MplayerController implements Initializable{
     @FXML StackPane home;
     @FXML StackPane music;
     @FXML StackPane video;
-    @FXML ImageView forward;
-    @FXML ImageView backward;
-    @FXML ImageView play_pause;
     @FXML BorderPane home_window;
     @FXML BorderPane music_window;
     @FXML BorderPane videos_window;
-    @FXML ListView<String> musicList;
-    @FXML ListView<String> videoList;
+    @FXML StackPane videoViews;
+    @FXML ProgressBar progress;
+    @FXML Label currentTime;
+    @FXML Label totalTime;
+    @FXML Button prevButton;
+    @FXML Button nextButton;
+    @FXML Button pausePlayButton;
+    @FXML private ListView<String> musicList;
+    private final ListView<String> videoList = new ListView<>();
+    private final MediaView media_view = new MediaView();
+    private MediaPlayer player;
+    private final StackPane mediaContainer = new StackPane();
+
 
     //event methods
     @FXML
@@ -44,20 +60,124 @@ public class MplayerController implements Initializable{
     private void videoWindow(){
         videos_window.toFront();
     }
-    @FXML
-    private void next(){
-        System.out.println("forwarding");
+    @FXML void prevMedia(){
+
     }
-    @FXML
-    private void previous(){
-        System.out.println("previous");
+    @FXML void nextMedia(){
+
     }
-    @FXML
-    private void pause_Play(){
-        System.out.println("pausing/playing");
+
+    private boolean playState = false;
+    @FXML void pausePlayMedia(){
+        playState = !playState;
+        if(playState) {
+            player.pause();
+        }else{
+            player.play();
+        }
     }
 
     ObservableList<String> music_list = FXCollections.observableArrayList();
+    ObservableList<String> videos = FXCollections.observableArrayList();
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+//        initIcons();
+        home_window.toFront();
+        mediaContainer.setAlignment(Pos.CENTER);
+        mediaContainer.setId("media-container");
+
+        mediaContainer.getChildren().add(media_view);
+        media_view.fitWidthProperty().bind(mediaContainer.widthProperty());
+        media_view.fitHeightProperty().bind(mediaContainer.heightProperty());
+        //set to fit without distortion
+        media_view.setPreserveRatio(true);
+
+        fetchMedia("Videos", ".mp4",videos);
+        videoList.setItems(videos);
+        videoViews.getChildren().setAll(videoList);
+        cellFactory(videoList);
+        fetchMedia("Music", ".mp3",music_list);
+        musicList.setItems(music_list);
+        cellFactory(musicList);
+    }
+
+    public void initIcons(){
+        FontIcon prev = new FontIcon("fa-step-backward");
+        prevButton.setGraphic(prev);
+        FontIcon next = new FontIcon("fa-step-forward");
+        nextButton.setGraphic(prev);
+        FontIcon play = new FontIcon("fa-play");
+        pausePlayButton.setGraphic(prev);
+    }
+
+    //Formating function
+    public String format(Duration duration){
+        //check if null
+        if(duration == null || duration.isUnknown()){
+            return "00 : 00";
+        }
+
+        //convert duration to seconds and cast from duration to int
+        int totalSeconds = (int) Math.floor((duration.toSeconds()));
+
+        //easy to work with the cast int than Duration to avoid errors
+        int runtimeMinutes = totalSeconds / 60; //to know the minutes
+        int hours = runtimeMinutes / 60;
+        int minutes = runtimeMinutes % 60;
+        int seconds = totalSeconds % 60; //the remainder of the totalSeconds(runtime) used as seconds
+
+        return String.format("%2d : %02d : %02d",hours, minutes, seconds);
+    }
+
+    //cellFactory
+    public void cellFactory(ListView<String> l){
+        l.setCellFactory(lv->{
+            ListCell<String> cell = new ListCell<String>(){
+                @Override
+                protected  void updateItem(String path, boolean empty){
+                    super.updateItem(path,empty);
+                    setText(empty ? null : new File(path).getName());
+                }
+            };
+            cell.setOnMouseClicked(e->{
+                if(!cell.isEmpty()){
+                    String path = cell.getItem();
+                    String uri = new File(path).toURI().toString();
+                    System.out.println(uri);
+
+                    Media media = new Media(uri);
+                    player = new MediaPlayer(media);
+
+                    if(new File(path).getName().toLowerCase().endsWith(".mp4")){
+                        mediaContainer.getChildren().setAll(media_view);
+                        media_view.setMediaPlayer(player);
+                    }
+
+                    if(player.getStatus() == MediaPlayer.Status.PLAYING){
+                        player.stop();
+                        progress.progressProperty().unbind();
+                    }
+
+                    DoubleBinding bind = Bindings.createDoubleBinding(()->{
+                        if(player.getTotalDuration().toMillis() <= 0 ) return 0.0;
+                        return player.getCurrentTime().toMillis() / player.getTotalDuration().toMillis();
+                    },player.currentTimeProperty(), player.totalDurationProperty());
+
+                    player.currentTimeProperty().addListener((obs, newTime, oldTime)->{
+                        Duration Total = player.getTotalDuration();
+
+                        currentTime.setText(format(newTime));
+                        totalTime.setText(format(Total));
+                    });
+
+                        progress.progressProperty().bind(bind);
+                        player.play();
+                }
+            });
+            return cell;
+        });
+    }
 
     public List<String> scan(File dir, String e){
         File[] list = dir.listFiles();
@@ -76,59 +196,19 @@ public class MplayerController implements Initializable{
         }
         return ls;
     }
-    public void fetchMusic(){
-        Task<List<String>> task = new Task<List<String>>() {
+
+    public void fetchMedia(String dir, String et, ObservableList<String> view){
+        Task<List<String>> Task = new Task<List<String>>() {
             @Override
             protected List<String> call() throws Exception {
                 String home = System.getProperty("user.home");
 
-                File folder = new File(home, "Music");
+                File folder = new File(home, dir);
 
-                return scan(folder,".mp3");
+                return scan(folder,et);
             }
         };
-        task.setOnSucceeded(eh -> music_list.setAll(task.getValue()));
-        new Thread(task).start();
-    }
-
-    ObservableList<String> videos = FXCollections.observableArrayList();
-    public void fetchVideos(){
-        Task<List<String>> vTask = new Task<List<String>>() {
-            @Override
-            protected List<String> call() throws Exception {
-                String home = System.getProperty("user.home");
-                File folder = new File(home, "Videos");
-
-                return scan(folder,".mp4");
-            }
-        };
-        vTask.setOnSucceeded(eh-> videos.setAll(vTask.getValue()));
-        new Thread(vTask).start();
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        home_window.toFront();
-        fetchMusic();
-        fetchVideos();
-        videoList.setItems(videos);
-        videoList.setCellFactory(lv->{
-            ListCell<String> cell = new ListCell<String>(){
-                @Override
-                protected void updateItem(String path, boolean empty){
-                    super.updateItem(path, empty);
-                    setText(empty ? null : new File(path).getAbsolutePath());
-                }
-            };
-            cell.setOnMouseClicked(event->{
-                System.out.print("clicked");
-                if(!cell.isEmpty()){
-                    String path = cell.getItem();
-                    System.out.print(path);
-                }
-            });
-            return cell;
-        });
-        musicList.setItems(music_list);
+        Task.setOnSucceeded(eh -> view.setAll(Task.getValue()));
+        new Thread(Task).start();
     }
 }

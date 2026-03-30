@@ -20,23 +20,6 @@
 .scroll-pane .viewport{
     -fx-background-color: transparent;
 }
-#progress{
-    -fx-border-color: transparent;
-    -fx-min-height:12;
-    -fx-min-width: 400;
-}
-#progress .bar{
-    -fx-background-color: #F4A460;
-}
-#progress .track{
-    -fx-background-color: transparent;
-}
-#home{
-    -fx-cursor: hand;
-    -fx-padding: 10;
-    -fx-border-width: 2;
-    -fx-border-radius: 40;
-}
 #music{
     -fx-cursor: hand;
     -fx-padding: 10;
@@ -78,16 +61,6 @@
 #media{
     -fx-background-color: #F0F8FF;
 }
-#video-progress{
-    -fx-border-color: transparent;
-    -fx-min-height:12;
-}
-#video-progress .bar{
-    -fx-background-color: #F4A460
-}
-#video-progress .track{
-    -fx-background-color: transparent;
-}
 #music-label{
     -fx-text-fill: #000000;
     -fx-background-color: #F0F8FF;
@@ -98,7 +71,6 @@
 }
 .list-cell{
     -fx-padding: 20;
-    /* -fx-text-fill: white; */
 }
 #music-list{
     -fx-border-color: #F0F8FF;
@@ -106,3 +78,24 @@
 #video-list{
     -fx-border-color: #F0F8FF;
 }
+#media-container{
+    -fx-background-color: black;
+}
+#progress{
+    -fx-max-height: 8;
+}
+/*#pause-play{*/
+/*    -fx-background-radius: 50%;*/
+/*    -fx-max-width: 50;*/
+/*    -fx-max-height: 50;*/
+/*}*/
+/*#next{*/
+/*    -fx-background-radius: 50%;*/
+/*    -fx-max-width: 30;*/
+/*    -fx-max-height: 30;*/
+/*}*/
+/*#prev{*/
+/*    -fx-background-radius: 50%;*/
+/*    -fx-max-width: 40;*/
+/*    -fx-max-height: 40;*/
+/*}*/
