@@ -92,6 +92,7 @@ public class MplayerController implements Initializable{
         mediaContainer.setId("media-container");
 
         mediaContainer.getChildren().add(media_view);
+
         media_view.fitWidthProperty().bind(mediaContainer.widthProperty());
         media_view.fitHeightProperty().bind(mediaContainer.heightProperty());
         //set to fit without distortion
@@ -152,7 +153,7 @@ public class MplayerController implements Initializable{
                     playState = false;
                     String path = cell.getItem();
                     String uri = new File(path).toURI().toString();
-                    System.out.println(uri);
+                    System.out.println(path);
 
                     Media media = new Media(uri);
                     player = new MediaPlayer(media);
@@ -162,12 +163,12 @@ public class MplayerController implements Initializable{
                         progress.progressProperty().unbind();
                     }
 
-                    player.setOnReady(()->{
-                        if(new File(path).getName().toLowerCase().endsWith(".mp4")){
-                            mediaContainer.getChildren().setAll(media_view);
-                            media_view.setMediaPlayer(player);
-                        }
+                    if(path.endsWith(".mp4")){
+                        videoViews.getChildren().setAll(mediaContainer);
+                        media_view.setMediaPlayer(player);
+                    }
 
+                    player.setOnReady(()->{
                         DoubleBinding bind = Bindings.createDoubleBinding(()->{
                             if(player.getTotalDuration().toMillis() <= 0 ) return 0.0;
                             return player.getCurrentTime().toMillis() / player.getTotalDuration().toMillis();
