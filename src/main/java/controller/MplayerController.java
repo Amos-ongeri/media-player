@@ -73,9 +73,11 @@ public class MplayerController implements Initializable{
         if(playState) {
             player.pause();
             pausePlayButton.setGraphic(new FontIcon("mdi-play"));
+            ((FontIcon) pausePlayButton.getGraphic()).setIconSize(30);
         }else{
             player.play();
             pausePlayButton.setGraphic(new FontIcon("mdi-pause"));
+            ((FontIcon) pausePlayButton.getGraphic()).setIconSize(30);
         }
     }
 
@@ -107,9 +109,12 @@ public class MplayerController implements Initializable{
     public void initIcons(){
         FontIcon prev = new FontIcon("mdi-skip-previous");
         prevButton.setGraphic(prev);
+        prev.setIconSize(20);
         FontIcon next = new FontIcon("mdi-skip-next");
         nextButton.setGraphic(next);
+        next.setIconSize(20);
         FontIcon play = new FontIcon("mdi-pause");
+        play.setIconSize(30);
         pausePlayButton.setGraphic(play);
     }
 

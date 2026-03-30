@@ -84,18 +84,18 @@
 #progress{
     -fx-max-height: 8;
 }
-/*#pause-play{*/
-/*    -fx-background-radius: 50%;*/
-/*    -fx-max-width: 50;*/
-/*    -fx-max-height: 50;*/
-/*}*/
-/*#next{*/
-/*    -fx-background-radius: 50%;*/
-/*    -fx-max-width: 30;*/
-/*    -fx-max-height: 30;*/
-/*}*/
-/*#prev{*/
-/*    -fx-background-radius: 50%;*/
-/*    -fx-max-width: 40;*/
-/*    -fx-max-height: 40;*/
-/*}*/
+#pause-play{
+    -fx-border: 0;
+    -fx-max-width: 40;
+    -fx-max-height: 40;
+}
+#next{
+    -fx-border: 0;
+    -fx-max-width: 40;
+    -fx-max-height: 40;
+}
+#prev{
+    -fx-border: 0;
+    -fx-max-width: 60;
+    -fx-max-height: 40;
+}
