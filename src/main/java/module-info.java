@@ -4,8 +4,8 @@ module org.amos.mediaplayer {
     requires java.desktop;
     requires javafx.media;
     requires org.kordamp.ikonli.javafx;
-    requires org.kordamp.ikonli.fontawesome5;
-
+    requires org.kordamp.ikonli.core;
+    requires org.kordamp.ikonli.materialdesign;
 
     opens org.amos.mediaplayer to javafx.fxml;
     exports org.amos.mediaplayer;

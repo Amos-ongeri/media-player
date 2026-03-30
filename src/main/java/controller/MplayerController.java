@@ -72,8 +72,10 @@ public class MplayerController implements Initializable{
         playState = !playState;
         if(playState) {
             player.pause();
+            pausePlayButton.setGraphic(new FontIcon("mdi-play"));
         }else{
             player.play();
+            pausePlayButton.setGraphic(new FontIcon("mdi-pause"));
         }
     }
 
@@ -82,7 +84,7 @@ public class MplayerController implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-//        initIcons();
+        initIcons();
         home_window.toFront();
         mediaContainer.setAlignment(Pos.CENTER);
         mediaContainer.setId("media-container");
@@ -103,12 +105,12 @@ public class MplayerController implements Initializable{
     }
 
     public void initIcons(){
-        FontIcon prev = new FontIcon("fa-step-backward");
+        FontIcon prev = new FontIcon("mdi-skip-previous");
         prevButton.setGraphic(prev);
-        FontIcon next = new FontIcon("fa-step-forward");
-        nextButton.setGraphic(prev);
-        FontIcon play = new FontIcon("fa-play");
-        pausePlayButton.setGraphic(prev);
+        FontIcon next = new FontIcon("mdi-skip-next");
+        nextButton.setGraphic(next);
+        FontIcon play = new FontIcon("mdi-pause");
+        pausePlayButton.setGraphic(play);
     }
 
     //Formating function
