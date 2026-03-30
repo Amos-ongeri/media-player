@@ -142,6 +142,7 @@ public class MplayerController implements Initializable{
             };
             cell.setOnMouseClicked(e->{
                 if(!cell.isEmpty()){
+                    playState = false;
                     String path = cell.getItem();
                     String uri = new File(path).toURI().toString();
                     System.out.println(uri);
@@ -149,30 +150,32 @@ public class MplayerController implements Initializable{
                     Media media = new Media(uri);
                     player = new MediaPlayer(media);
 
-                    if(new File(path).getName().toLowerCase().endsWith(".mp4")){
-                        mediaContainer.getChildren().setAll(media_view);
-                        media_view.setMediaPlayer(player);
-                    }
-
                     if(player.getStatus() == MediaPlayer.Status.PLAYING){
                         player.stop();
                         progress.progressProperty().unbind();
                     }
 
-                    DoubleBinding bind = Bindings.createDoubleBinding(()->{
-                        if(player.getTotalDuration().toMillis() <= 0 ) return 0.0;
-                        return player.getCurrentTime().toMillis() / player.getTotalDuration().toMillis();
-                    },player.currentTimeProperty(), player.totalDurationProperty());
+                    player.setOnReady(()->{
+                        if(new File(path).getName().toLowerCase().endsWith(".mp4")){
+                            mediaContainer.getChildren().setAll(media_view);
+                            media_view.setMediaPlayer(player);
+                        }
 
-                    player.currentTimeProperty().addListener((obs, newTime, oldTime)->{
-                        Duration Total = player.getTotalDuration();
+                        DoubleBinding bind = Bindings.createDoubleBinding(()->{
+                            if(player.getTotalDuration().toMillis() <= 0 ) return 0.0;
+                            return player.getCurrentTime().toMillis() / player.getTotalDuration().toMillis();
+                        },player.currentTimeProperty(), player.totalDurationProperty());
 
-                        currentTime.setText(format(newTime));
-                        totalTime.setText(format(Total));
-                    });
+                        player.currentTimeProperty().addListener((obs, newTime, oldTime)->{
+                            Duration Total = player.getTotalDuration();
+
+                            currentTime.setText(format(newTime));
+                            totalTime.setText(format(Total));
+                        });
 
                         progress.progressProperty().bind(bind);
                         player.play();
+                    });
                 }
             });
             return cell;
