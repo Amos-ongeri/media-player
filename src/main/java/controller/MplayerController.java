@@ -26,9 +26,6 @@ import org.kordamp.ikonli.javafx.FontIcon;
 public class MplayerController implements Initializable{
 
     //fxml variables by fx:id
-    @FXML StackPane home;
-    @FXML StackPane music;
-    @FXML StackPane video;
     @FXML BorderPane home_window;
     @FXML BorderPane music_window;
     @FXML BorderPane videos_window;
@@ -152,7 +149,7 @@ public class MplayerController implements Initializable{
     //cellFactory
     public void cellFactory(ListView<String> l){
         l.setCellFactory(lv->{
-            ListCell<String> cell = new ListCell<String>(){
+            ListCell<String> cell = new ListCell<>(){
                 @Override
                 protected  void updateItem(String path, boolean empty){
                     super.updateItem(path,empty);
@@ -220,9 +217,9 @@ public class MplayerController implements Initializable{
     }
 
     public void fetchMedia(String dir, String et, ObservableList<String> view){
-        Task<List<String>> Task = new Task<List<String>>() {
+        Task<List<String>> Task = new Task<>() {
             @Override
-            protected List<String> call() throws Exception {
+            protected List<String> call() {
                 String home = System.getProperty("user.home");
 
                 File folder = new File(home, dir);
