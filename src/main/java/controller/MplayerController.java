@@ -15,7 +15,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
@@ -40,6 +39,9 @@ public class MplayerController implements Initializable{
     @FXML Button prevButton;
     @FXML Button nextButton;
     @FXML Button pausePlayButton;
+    @FXML Button homeButton;
+    @FXML Button musicButton;
+    @FXML Button videosButton;
     @FXML private ListView<String> musicList;
     private final ListView<String> videoList = new ListView<>();
     private final MediaView media_view = new MediaView();
@@ -49,15 +51,15 @@ public class MplayerController implements Initializable{
 
     //event methods
     @FXML
-    private void homeWindow(){
+    private void homeView(){
         home_window.toFront();
     }
     @FXML
-    private void musicWindow(){
+    private void musicView(){
         music_window.toFront();
     }
     @FXML
-    private void videoWindow(){
+    private void videoView(){
         videos_window.toFront();
     }
     @FXML void prevMedia(){
@@ -117,6 +119,15 @@ public class MplayerController implements Initializable{
         FontIcon play = new FontIcon("mdi-pause");
         play.setIconSize(30);
         pausePlayButton.setGraphic(play);
+        FontIcon home = new FontIcon("mdi-home");
+        home.setIconSize(30);
+        homeButton.setGraphic(home);
+        FontIcon music = new FontIcon("mdi-music-box-outline");
+        music.setIconSize(30);
+        musicButton.setGraphic(music);
+        FontIcon film = new FontIcon("mdi-filmstrip");
+        film.setIconSize(30);
+        videosButton.setGraphic(film);
     }
 
     //Formating function

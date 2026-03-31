@@ -21,7 +21,6 @@
     -fx-background-color: transparent;
 }
 #music{
-    -fx-cursor: hand;
     -fx-padding: 10;
     -fx-border-width: 2;
     -fx-border-radius: 40;
@@ -45,15 +44,6 @@
 #home:hover{
     -fx-background-color: #3f3d3da9;
     -fx-background-radius: 40;
-}
-#backward{
-    -fx-cursor: hand;
-}
-#forward{
-    -fx-cursor: hand;
-}
-#play_pause{
-    -fx-cursor: hand;
 }
 #video_window{
 
