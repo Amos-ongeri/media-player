@@ -3,9 +3,12 @@ package org.amos.mediaplayer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+
 import java.io.IOException;
+import java.util.Objects;
 
 public class MplayerApplication extends Application {
     @Override
@@ -14,6 +17,7 @@ public class MplayerApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 900, 600);
         stage.setTitle("Music Player");
         stage.setScene(scene);
+        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/app-icon/play.png"))));
         stage.show();
     }
 }
