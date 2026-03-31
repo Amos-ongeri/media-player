@@ -15,7 +15,7 @@ public class MplayerApplication extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MplayerApplication.class.getResource("mplayer-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1000, 500);
-        stage.setTitle("Music Player");
+        stage.setTitle("Media Player");
         stage.setScene(scene);
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/app-icon/play.png"))));
         stage.show();

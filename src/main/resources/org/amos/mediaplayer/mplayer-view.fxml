@@ -7,31 +7,43 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane id="parent" fx:id="mainLayout" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../../style/mplayer-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MplayerController">
     <left>
-        <VBox fx:id="navigation" alignment="TOP_CENTER" spacing="3.0" BorderPane.alignment="CENTER">
+        <VBox id="nav-section" fx:id="navigation" alignment="TOP_CENTER" spacing="3.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="homeButton" mnemonicParsing="false" onAction="#homeView">
+            <ToggleButton fx:id="homeButton" mnemonicParsing="false" onAction="#homeView" styleClass="nav-item">
+               <toggleGroup>
+                  <ToggleGroup fx:id="navToggle" />
+               </toggleGroup>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
-            </Button>
-            <Button fx:id="musicButton" mnemonicParsing="false" onAction="#musicView">
+            </ToggleButton>
+            <Separator>
+               <VBox.margin>
+                  <Insets bottom="2.0" top="2.0" />
+               </VBox.margin>
+            </Separator>
+            <ToggleButton fx:id="musicButton" mnemonicParsing="false" onAction="#musicView" styleClass="nav-item" toggleGroup="$navToggle">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
-            </Button>
-            <Button id="videos" fx:id="videosButton" mnemonicParsing="false" onAction="#videoView">
+            </ToggleButton>
+            <ToggleButton fx:id="videosButton" mnemonicParsing="false" onAction="#videoView" styleClass="nav-item" toggleGroup="$navToggle">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
-            </Button>
+            </ToggleButton>
          </children>
          <BorderPane.margin>
             <Insets top="3.0" />
@@ -55,6 +67,9 @@
                         <padding>
                             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                         </padding>
+                  <font>
+                     <Font name="SansSerif Bold" size="18.0" />
+                  </font>
                     </Label>
                 </top>
                 <center>
@@ -67,6 +82,9 @@
                         <padding>
                             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                         </padding>
+                  <font>
+                     <Font name="SansSerif Bold" size="18.0" />
+                  </font>
                     </Label>
                 </top>
             <center>
@@ -76,7 +94,7 @@
         </StackPane>
     </center>
     <bottom>
-        <VBox alignment="CENTER" prefHeight="130.0" BorderPane.alignment="CENTER">
+        <VBox id="bottom-section" alignment="CENTER" prefHeight="130.0" BorderPane.alignment="CENTER">
             <HBox alignment="CENTER" prefHeight="39.0" prefWidth="346.0">
             <children>
                <ProgressBar id="progress" fx:id="progress" prefHeight="18.0" prefWidth="506.0" progress="0.0" />
@@ -88,15 +106,15 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="89.0" prefWidth="346.0" spacing="40.0">
             <children>
-               <Button id="prev" fx:id="prevButton" mnemonicParsing="false" onAction="#prevMedia">
+               <Button fx:id="prevButton" mnemonicParsing="false" onAction="#prevMedia" styleClass="playback-item">
                   <cursor>
                      <Cursor fx:constant="HAND" />
                   </cursor></Button>
-               <Button id="pause-play" fx:id="pausePlayButton" mnemonicParsing="false" onAction="#pausePlayMedia">
+               <Button fx:id="pausePlayButton" mnemonicParsing="false" onAction="#pausePlayMedia" styleClass="playback-item">
                   <cursor>
                      <Cursor fx:constant="HAND" />
                   </cursor></Button>
-               <Button id="next" fx:id="nextButton" mnemonicParsing="false" onAction="#nextMedia">
+               <Button fx:id="nextButton" mnemonicParsing="false" onAction="#nextMedia" styleClass="playback-item">
                   <cursor>
                      <Cursor fx:constant="HAND" />
                   </cursor></Button>

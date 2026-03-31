@@ -20,6 +20,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
 
@@ -36,9 +37,9 @@ public class MplayerController implements Initializable{
     @FXML Button prevButton;
     @FXML Button nextButton;
     @FXML Button pausePlayButton;
-    @FXML Button homeButton;
-    @FXML Button musicButton;
-    @FXML Button videosButton;
+    @FXML ToggleButton homeButton;
+    @FXML ToggleButton musicButton;
+    @FXML ToggleButton videosButton;
     @FXML private ListView<String> musicList;
     private final ListView<String> videoList = new ListView<>();
     private final MediaView media_view = new MediaView();
@@ -109,21 +110,27 @@ public class MplayerController implements Initializable{
     public void initIcons(){
         FontIcon prev = new FontIcon("mdi-skip-previous");
         prevButton.setGraphic(prev);
+        prev.setIconColor(Color.rgb(41, 53, 57));
         prev.setIconSize(20);
         FontIcon next = new FontIcon("mdi-skip-next");
         nextButton.setGraphic(next);
+        next.setIconColor(Color.rgb(41, 53, 57));
         next.setIconSize(20);
         FontIcon play = new FontIcon("mdi-pause");
         play.setIconSize(30);
+        play.setIconColor(Color.rgb(41, 53, 57));
         pausePlayButton.setGraphic(play);
         FontIcon home = new FontIcon("mdi-home");
         home.setIconSize(30);
+        home.setIconColor(Color.rgb(41, 53, 57));
         homeButton.setGraphic(home);
         FontIcon music = new FontIcon("mdi-music-box-outline");
         music.setIconSize(30);
+        music.setIconColor(Color.rgb(41, 53, 57));
         musicButton.setGraphic(music);
         FontIcon film = new FontIcon("mdi-filmstrip");
         film.setIconSize(30);
+        film.setIconColor(Color.rgb(41, 53, 57));
         videosButton.setGraphic(film);
     }
 
