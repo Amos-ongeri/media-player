@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.DoubleBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -18,11 +16,9 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
-import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 public class MplayerController implements Initializable{
@@ -44,7 +40,6 @@ public class MplayerController implements Initializable{
     @FXML private ListView<String> musicList;
     private final ListView<String> videoList = new ListView<>();
     private final MediaView media_view = new MediaView();
-    private MediaPlayer player;
     private final StackPane mediaContainer = new StackPane();
     private final ThePlayerController playerController = new ThePlayerController();
 
@@ -138,6 +133,7 @@ public class MplayerController implements Initializable{
             {
                 playI.setIconSize(10);
                 playB.setGraphic(playI);
+                playB.setId("cell-play-button");
             }
             @Override
             protected  void updateItem(String path, boolean empty){
