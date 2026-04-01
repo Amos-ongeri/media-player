@@ -99,15 +99,9 @@ public class ThePlayerController {
     }
 
     public void mediaView(){
-        mediaContainer.setAlignment(Pos.CENTER);
         mediaContainer.setId("media-container");
         MediaView media_view = new MediaView(player);
-        mediaContainer.getChildren().add(media_view);
-
-        media_view.fitWidthProperty().bind(mediaContainer.widthProperty());
-        media_view.fitHeightProperty().bind(mediaContainer.heightProperty());
-        //set to fit without distortion
-        media_view.setPreserveRatio(true);
+        mediaContainer.getChildren().setAll(media_view);
 
         view.getChildren().setAll(mediaContainer);
     }
