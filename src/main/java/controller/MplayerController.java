@@ -131,6 +131,7 @@ public class MplayerController implements Initializable{
             final HBox cell = new HBox(10);
 
             {
+                playI.setIconColor(Color.rgb(53, 231, 199));
                 playI.setIconSize(10);
                 playB.setGraphic(playI);
                 playB.setId("cell-play-button");
@@ -145,6 +146,7 @@ public class MplayerController implements Initializable{
                     cell.getChildren().setAll(playB,name);
                     setGraphic(cell);
                     playB.setOnAction(e->{
+                        name.setId("current-media");
                         int cellIndex = getIndex();
                         playerController.setProgressBar(progress);
                         playerController.setLabels(currentTime,totalTime);

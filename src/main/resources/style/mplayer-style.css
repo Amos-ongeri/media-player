@@ -97,3 +97,6 @@
 #bottom-section{
     -fx-background-color: #FFFFFF;
 }
+#current-media{
+    -fx-text-fill: #35E7C7;
+}
