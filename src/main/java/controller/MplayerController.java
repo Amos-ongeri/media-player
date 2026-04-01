@@ -16,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -45,6 +46,8 @@ public class MplayerController implements Initializable{
     private final MediaView media_view = new MediaView();
     private MediaPlayer player;
     private final StackPane mediaContainer = new StackPane();
+    private ThePlayerController playerController = new ThePlayerController();
+
 
 
     //event methods
@@ -55,10 +58,17 @@ public class MplayerController implements Initializable{
     @FXML
     private void musicView(){
         music_window.toFront();
+        fetchMedia("Music", ".mp3",music_list);
+        musicList.setItems(music_list);
+        cellFactory(musicList);
     }
     @FXML
     private void videoView(){
         videos_window.toFront();
+        fetchMedia("Videos", ".mp4",videos);
+        videoList.setItems(videos);
+        videoViews.getChildren().setAll(videoList);
+        cellFactory(videoList);
     }
     @FXML void prevMedia(){
 
@@ -97,14 +107,6 @@ public class MplayerController implements Initializable{
         media_view.fitHeightProperty().bind(mediaContainer.heightProperty());
         //set to fit without distortion
         media_view.setPreserveRatio(true);
-
-        fetchMedia("Videos", ".mp4",videos);
-        videoList.setItems(videos);
-        videoViews.getChildren().setAll(videoList);
-        cellFactory(videoList);
-        fetchMedia("Music", ".mp3",music_list);
-        musicList.setItems(music_list);
-        cellFactory(musicList);
     }
 
     public void initIcons(){
@@ -134,74 +136,35 @@ public class MplayerController implements Initializable{
         videosButton.setGraphic(film);
     }
 
-    //Formating function
-    public String format(Duration duration){
-        //check if null
-        if(duration == null || duration.isUnknown()){
-            return "00 : 00";
-        }
-
-        //convert duration to seconds and cast from duration to int
-        int totalSeconds = (int) Math.floor((duration.toSeconds()));
-
-        //easy to work with the cast int than Duration to avoid errors
-        int runtimeMinutes = totalSeconds / 60; //to know the minutes
-        int hours = runtimeMinutes / 60;
-        int minutes = runtimeMinutes % 60;
-        int seconds = totalSeconds % 60; //the remainder of the totalSeconds(runtime) used as seconds
-
-        return String.format("%2d : %02d : %02d",hours, minutes, seconds);
-    }
-
     //cellFactory
     public void cellFactory(ListView<String> l){
-        l.setCellFactory(lv->{
-            ListCell<String> cell = new ListCell<>(){
-                @Override
-                protected  void updateItem(String path, boolean empty){
-                    super.updateItem(path,empty);
-                    setText(empty ? null : new File(path).getName());
-                }
-            };
-            cell.setOnMouseClicked(e->{
-                if(!cell.isEmpty()){
-                    playState = false;
-                    String path = cell.getItem();
-                    String uri = new File(path).toURI().toString();
-                    System.out.println(path);
+        l.setCellFactory(lv -> new ListCell<>(){
+            final FontIcon playI = new FontIcon("mdi-play");
+            final Button playB = new Button();
+            final HBox cell = new HBox(10);
 
-                    Media media = new Media(uri);
-                    player = new MediaPlayer(media);
-
-                    if(player.getStatus() == MediaPlayer.Status.PLAYING){
-                        player.stop();
-                        progress.progressProperty().unbind();
-                    }
-
-                    if(path.endsWith(".mp4")){
-                        videoViews.getChildren().setAll(mediaContainer);
-                        media_view.setMediaPlayer(player);
-                    }
-
-                    player.setOnReady(()->{
-                        DoubleBinding bind = Bindings.createDoubleBinding(()->{
-                            if(player.getTotalDuration().toMillis() <= 0 ) return 0.0;
-                            return player.getCurrentTime().toMillis() / player.getTotalDuration().toMillis();
-                        },player.currentTimeProperty(), player.totalDurationProperty());
-
-                        player.currentTimeProperty().addListener((obs, newTime, oldTime)->{
-                            Duration Total = player.getTotalDuration();
-
-                            currentTime.setText(format(newTime));
-                            totalTime.setText(format(Total));
-                        });
-
-                        progress.progressProperty().bind(bind);
-                        player.play();
+            {
+                playI.setIconSize(10);
+                playB.setGraphic(playI);
+            }
+            @Override
+            protected  void updateItem(String path, boolean empty){
+                super.updateItem(path,empty);
+                if(empty){
+                    setGraphic(null);
+                }else{
+                    Label name = new Label( new File(path).getName());
+                    cell.getChildren().setAll(playB,name);
+                    setGraphic(cell);
+                    playB.setOnAction(e->{
+                        int cellIndex = getIndex();
+                        playerController.setProgressBar(progress);
+                        playerController.setLabels(currentTime,totalTime);
+                        System.out.println(cellIndex);
+                        playerController.play(cellIndex);
                     });
                 }
-            });
-            return cell;
+            }
         });
     }
 
@@ -224,6 +187,7 @@ public class MplayerController implements Initializable{
     }
 
     public void fetchMedia(String dir, String et, ObservableList<String> view){
+        playerController.setList(view);
         Task<List<String>> Task = new Task<>() {
             @Override
             protected List<String> call() {
