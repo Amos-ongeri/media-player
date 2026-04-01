@@ -3,11 +3,13 @@ package controller;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.File;
 
@@ -83,6 +85,18 @@ public class ThePlayerController {
         this.list = mediaList;
     }
 
+    public void pausePlay(Button pausePlayButton, boolean playState){
+        if(playState) {
+            player.pause();
+            pausePlayButton.setGraphic(new FontIcon("mdi-play"));
+            ((FontIcon) pausePlayButton.getGraphic()).setIconSize(30);
+        }else{
+            player.play();
+            pausePlayButton.setGraphic(new FontIcon("mdi-pause"));
+            ((FontIcon) pausePlayButton.getGraphic()).setIconSize(30);
+        }
+    }
+
     public void playNextMedia(){
         currentMedia++;
 
@@ -94,7 +108,7 @@ public class ThePlayerController {
     public void playPreviousMedia(){
         currentMedia--;
 
-        if(currentMedia > 0 && currentMedia < list.size()){
+        if(currentMedia >= 0 && currentMedia < list.size()){
             play(currentMedia);
         }
     }

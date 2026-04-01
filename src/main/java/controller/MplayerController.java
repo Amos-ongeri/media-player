@@ -46,7 +46,7 @@ public class MplayerController implements Initializable{
     private final MediaView media_view = new MediaView();
     private MediaPlayer player;
     private final StackPane mediaContainer = new StackPane();
-    private ThePlayerController playerController = new ThePlayerController();
+    private final ThePlayerController playerController = new ThePlayerController();
 
 
 
@@ -71,24 +71,16 @@ public class MplayerController implements Initializable{
         cellFactory(videoList);
     }
     @FXML void prevMedia(){
-
+        playerController.playPreviousMedia();
     }
     @FXML void nextMedia(){
-
+        playerController.playNextMedia();
     }
 
     private boolean playState = false;
     @FXML void pausePlayMedia(){
         playState = !playState;
-        if(playState) {
-            player.pause();
-            pausePlayButton.setGraphic(new FontIcon("mdi-play"));
-            ((FontIcon) pausePlayButton.getGraphic()).setIconSize(30);
-        }else{
-            player.play();
-            pausePlayButton.setGraphic(new FontIcon("mdi-pause"));
-            ((FontIcon) pausePlayButton.getGraphic()).setIconSize(30);
-        }
+        playerController.pausePlay(pausePlayButton, playState);
     }
 
     ObservableList<String> music_list = FXCollections.observableArrayList();
