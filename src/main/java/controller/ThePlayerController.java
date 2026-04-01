@@ -100,16 +100,20 @@ public class ThePlayerController {
     public void playNextMedia(){
         currentMedia++;
 
-        if(currentMedia >= 0 && currentMedia < list.size()){
-            play(currentMedia);
+        if(player != null) {
+            if (currentMedia >= 0 && currentMedia < list.size()) {
+                play(currentMedia);
+            }
         }
     }
 
     public void playPreviousMedia(){
         currentMedia--;
 
-        if(currentMedia >= 0 && currentMedia < list.size()){
-            play(currentMedia);
+        if(player != null) {
+            if (currentMedia >= 0 && currentMedia < list.size()) {
+                play(currentMedia);
+            }
         }
     }
 }
