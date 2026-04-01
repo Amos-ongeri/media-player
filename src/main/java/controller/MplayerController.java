@@ -85,15 +85,6 @@ public class MplayerController implements Initializable{
     public void initialize(URL url, ResourceBundle rb) {
         initIcons();
         home_window.toFront();
-        mediaContainer.setAlignment(Pos.CENTER);
-        mediaContainer.setId("media-container");
-
-        mediaContainer.getChildren().add(media_view);
-
-        media_view.fitWidthProperty().bind(mediaContainer.widthProperty());
-        media_view.fitHeightProperty().bind(mediaContainer.heightProperty());
-        //set to fit without distortion
-        media_view.setPreserveRatio(true);
     }
 
     public void initIcons(){
@@ -150,7 +141,7 @@ public class MplayerController implements Initializable{
                         int cellIndex = getIndex();
                         playerController.setProgressBar(progress);
                         playerController.setLabels(currentTime,totalTime);
-                        System.out.println(cellIndex);
+                        playerController.setView(videoViews);
                         playerController.play(cellIndex);
                     });
                 }
