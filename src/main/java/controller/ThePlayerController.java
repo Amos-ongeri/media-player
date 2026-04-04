@@ -14,6 +14,7 @@ import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.File;
+import java.util.Objects;
 
 public class ThePlayerController {
     private MediaPlayer player;
@@ -138,7 +139,26 @@ public class ThePlayerController {
         }
     }
 
-    public void seek() {
+    public void seek(String direction) {
+        Duration current = player.getCurrentTime();
+
+        Duration newTime;
+        if(Objects.equals(direction, "seek_10_front")) {
+            newTime = current.add(Duration.seconds(10));
+            if(newTime.greaterThan(player.getTotalDuration())) {
+                newTime = player.getTotalDuration();
+            }
+
+            player.seek(newTime);
+        } else if(Objects.equals(direction, "seek_10_back")) {
+            newTime = current.subtract(Duration.seconds(10));
+            if(newTime.lessThan(Duration.ZERO)){
+                newTime = Duration.ZERO;
+            }
+
+            player.seek(newTime);
+        }
+
 
     }
 }

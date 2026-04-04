@@ -76,10 +76,10 @@ public class MplayerController implements Initializable{
     }
 
     @FXML void seekBack10() {
-
+        playerController.seek(seek_10_back.getId());
     }
     @FXML void seekFront10() {
-
+        playerController.seek(seek_10_front.getId());
     }
 
     ObservableList<String> music_list = FXCollections.observableArrayList();
@@ -117,6 +117,14 @@ public class MplayerController implements Initializable{
         film.setIconSize(30);
         film.setIconColor(color);
         videosButton.setGraphic(film);
+        FontIcon seek10F = new FontIcon("mdi2f-fast-forward-10");
+        seek10F.setIconSize(20);
+        seek10F.setIconColor(color);
+        seek_10_front.setGraphic(seek10F);
+        FontIcon seek10B = new FontIcon("mdi2r-rewind-10");
+        seek10B.setIconSize(20);
+        seek10B.setIconColor(color);
+        seek_10_back.setGraphic(seek10B);
     }
 
     //cellFactory
