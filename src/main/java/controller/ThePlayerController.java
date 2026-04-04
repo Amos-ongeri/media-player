@@ -121,9 +121,12 @@ public class ThePlayerController {
 
     public void playNextMedia() {
         currentMedia++;
+        if(currentMedia >= list.size()){
+            currentMedia = list.size() - 1;
+        }
 
         if(player != null) {
-            if (currentMedia >= 0 && currentMedia < list.size()) {
+            if (currentMedia >= 0) {
                 play(currentMedia);
             }
         }
@@ -131,9 +134,12 @@ public class ThePlayerController {
 
     public void playPreviousMedia() {
         currentMedia--;
+        if(currentMedia < 0){
+            currentMedia = 0;
+        }
 
         if(player != null) {
-            if (currentMedia >= 0 && currentMedia < list.size()) {
+            if (currentMedia < list.size()) {
                 play(currentMedia);
             }
         }
