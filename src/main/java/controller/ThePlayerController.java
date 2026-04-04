@@ -3,7 +3,6 @@ package controller;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.collections.ObservableList;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -26,12 +25,12 @@ public class ThePlayerController {
     private StackPane view;
     private int currentMedia = -1;
 
-    public void setProgressBar(ProgressBar progressBar){
+    public void setProgressBar(ProgressBar progressBar) {
         this.progressBar = progressBar;
     }
 
     //Formating function
-    public String format(Duration duration){
+    public String format(Duration duration) {
         //check if null
         if(duration == null || duration.isUnknown()){
             return "00 : 00";
@@ -49,7 +48,7 @@ public class ThePlayerController {
         return String.format("%2d : %02d : %02d",hours, minutes, seconds);
     }
 
-    public void setLabels(Label currentTime, Label totalDuration){
+    public void setLabels(Label currentTime, Label totalDuration) {
         this.currentTime = currentTime;
         this.totalDuration = totalDuration;
     }
@@ -66,14 +65,14 @@ public class ThePlayerController {
         Media media = new Media(new File(list.get(index)).toURI().toString());
         player = new MediaPlayer(media);
 
-        player.setOnReady(()->{
+        player.setOnReady(()-> {
             player.play();
 
             if(new File(list.get(index)).getName().endsWith(".mp4")){
                 this.mediaView();
             }
 
-            DoubleBinding binding = Bindings.createDoubleBinding(()->{
+            DoubleBinding binding = Bindings.createDoubleBinding(()-> {
                 if(player.getTotalDuration().toMillis() <= 0) return 0.0;
 
                 return player.getCurrentTime().toMillis() / player.getTotalDuration().toMillis();
@@ -90,15 +89,15 @@ public class ThePlayerController {
             player.setOnEndOfMedia(this::playNextMedia);
         });
     }
-    public void setList(ObservableList<String> mediaList){
+    public void setList(ObservableList<String> mediaList) {
         this.list = mediaList;
     }
 
-    public void setView(StackPane view){
+    public void setView(StackPane view) {
         this.view = view;
     }
 
-    public void mediaView(){
+    public void mediaView() {
         mediaContainer.setId("media-container");
         MediaView media_view = new MediaView(player);
         mediaContainer.getChildren().setAll(media_view);
@@ -106,12 +105,12 @@ public class ThePlayerController {
         view.getChildren().setAll(mediaContainer);
     }
 
-    public void pausePlay(Button pausePlayButton, boolean playState){
+    public void pausePlay(Button pausePlayButton, boolean playState) {
         if(playState) {
             player.pause();
             pausePlayButton.setGraphic(new FontIcon("mdi-play"));
             ((FontIcon) pausePlayButton.getGraphic()).setIconSize(30);
-        }else{
+        } else {
             player.play();
             pausePlayButton.setGraphic(new FontIcon("mdi-pause"));
             ((FontIcon) pausePlayButton.getGraphic()).setIconSize(30);
@@ -119,7 +118,7 @@ public class ThePlayerController {
     }
 
 
-    public void playNextMedia(){
+    public void playNextMedia() {
         currentMedia++;
 
         if(player != null) {
@@ -129,7 +128,7 @@ public class ThePlayerController {
         }
     }
 
-    public void playPreviousMedia(){
+    public void playPreviousMedia() {
         currentMedia--;
 
         if(player != null) {
@@ -137,5 +136,9 @@ public class ThePlayerController {
                 play(currentMedia);
             }
         }
+    }
+
+    public void seek() {
+
     }
 }

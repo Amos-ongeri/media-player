@@ -11,13 +11,10 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 
@@ -38,44 +35,51 @@ public class MplayerController implements Initializable{
     @FXML ToggleButton musicButton;
     @FXML ToggleButton videosButton;
     @FXML private ListView<String> musicList;
+    @FXML Button seek_10_back;
+    @FXML Button seek_10_front;
     private final ListView<String> videoList = new ListView<>();
-    private final MediaView media_view = new MediaView();
-    private final StackPane mediaContainer = new StackPane();
     private final ThePlayerController playerController = new ThePlayerController();
 
 
 
     //event methods
     @FXML
-    private void homeView(){
+    private void homeView() {
         home_window.toFront();
     }
     @FXML
-    private void musicView(){
+    private void musicView() {
         music_window.toFront();
         fetchMedia("Music", ".mp3",music_list);
         musicList.setItems(music_list);
         cellFactory(musicList);
     }
     @FXML
-    private void videoView(){
+    private void videoView() {
         videos_window.toFront();
         fetchMedia("Videos", ".mp4",videos);
         videoList.setItems(videos);
         videoViews.getChildren().setAll(videoList);
         cellFactory(videoList);
     }
-    @FXML void prevMedia(){
+    @FXML void prevMedia() {
         playerController.playPreviousMedia();
     }
-    @FXML void nextMedia(){
+    @FXML void nextMedia() {
         playerController.playNextMedia();
     }
 
     private boolean playState = false;
-    @FXML void pausePlayMedia(){
+    @FXML void pausePlayMedia() {
         playState = !playState;
         playerController.pausePlay(pausePlayButton, playState);
+    }
+
+    @FXML void seekBack10() {
+
+    }
+    @FXML void seekFront10() {
+
     }
 
     ObservableList<String> music_list = FXCollections.observableArrayList();
@@ -87,36 +91,37 @@ public class MplayerController implements Initializable{
         home_window.toFront();
     }
 
-    public void initIcons(){
+    public void initIcons() {
+        Color color = Color.rgb(41, 53, 57);
         FontIcon prev = new FontIcon("mdi-skip-previous");
         prevButton.setGraphic(prev);
-        prev.setIconColor(Color.rgb(41, 53, 57));
+        prev.setIconColor(color);
         prev.setIconSize(20);
         FontIcon next = new FontIcon("mdi-skip-next");
         nextButton.setGraphic(next);
-        next.setIconColor(Color.rgb(41, 53, 57));
+        next.setIconColor(color);
         next.setIconSize(20);
         FontIcon play = new FontIcon("mdi-pause");
         play.setIconSize(30);
-        play.setIconColor(Color.rgb(41, 53, 57));
+        play.setIconColor(color);
         pausePlayButton.setGraphic(play);
         FontIcon home = new FontIcon("mdi-home");
         home.setIconSize(30);
-        home.setIconColor(Color.rgb(41, 53, 57));
+        home.setIconColor(color);
         homeButton.setGraphic(home);
         FontIcon music = new FontIcon("mdi-music-box-outline");
         music.setIconSize(30);
-        music.setIconColor(Color.rgb(41, 53, 57));
+        music.setIconColor(color);
         musicButton.setGraphic(music);
         FontIcon film = new FontIcon("mdi-filmstrip");
         film.setIconSize(30);
-        film.setIconColor(Color.rgb(41, 53, 57));
+        film.setIconColor(color);
         videosButton.setGraphic(film);
     }
 
     //cellFactory
-    public void cellFactory(ListView<String> l){
-        l.setCellFactory(lv -> new ListCell<>(){
+    public void cellFactory(ListView<String> l) {
+        l.setCellFactory(lv -> new ListCell<>() {
             final FontIcon playI = new FontIcon("mdi-play");
             final Button playB = new Button();
             final HBox cell = new HBox(10);
@@ -128,7 +133,7 @@ public class MplayerController implements Initializable{
                 playB.setId("cell-play-button");
             }
             @Override
-            protected  void updateItem(String path, boolean empty){
+            protected  void updateItem(String path, boolean empty) {
                 super.updateItem(path,empty);
                 if(empty){
                     setGraphic(null);
@@ -149,7 +154,7 @@ public class MplayerController implements Initializable{
         });
     }
 
-    public List<String> scan(File dir, String e){
+    public List<String> scan(File dir, String e) {
         File[] list = dir.listFiles();
 
         List<String> ls = new ArrayList<>();
@@ -167,7 +172,7 @@ public class MplayerController implements Initializable{
         return ls;
     }
 
-    public void fetchMedia(String dir, String et, ObservableList<String> view){
+    public void fetchMedia(String dir, String et, ObservableList<String> view) {
         playerController.setList(view);
         Task<List<String>> Task = new Task<>() {
             @Override
