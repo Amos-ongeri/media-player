@@ -36,10 +36,6 @@
     -fx-background-radius: 10;
     -fx-background-insets: 3;
 }
-.list-cell:selected{
-    -fx-background-color: #35E7C7;
-    -fx-text-fill: black;
-}
 .list-cell:hover{
     -fx-background-color: #D3D3D3;
 }

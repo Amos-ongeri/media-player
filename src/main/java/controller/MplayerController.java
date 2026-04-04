@@ -52,6 +52,9 @@ public class MplayerController implements Initializable{
         music_window.toFront();
         fetchMedia("Music", ".mp3",music_list);
         musicList.setItems(music_list);
+
+        //remove selection behavior (e.g. background color change when cell is selected)
+        musicList.setSelectionModel(null);
         cellFactory(musicList);
     }
     @FXML
@@ -59,6 +62,9 @@ public class MplayerController implements Initializable{
         videos_window.toFront();
         fetchMedia("Videos", ".mp4",videos);
         videoList.setItems(videos);
+
+        //remove selection behavior (e.g. background color change when cell is selected)
+        videoList.setSelectionModel(null);
         videoViews.getChildren().setAll(videoList);
         cellFactory(videoList);
     }
@@ -150,6 +156,7 @@ public class MplayerController implements Initializable{
                     cell.getChildren().setAll(playB,name);
                     setGraphic(cell);
                     playB.setOnAction(e->{
+                        e.consume();
                         name.setId("current-media");
                         int cellIndex = getIndex();
                         playerController.setProgressBar(progress);
